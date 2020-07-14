@@ -1,8 +1,7 @@
 # GOST
 A Generalized Online Suffix Tree algorithm
 
-Based on [Ukkonen's algorithm](https://www.cs.helsinki.fi/u/ukkonen/SuffixT1withFigs.pdf) ([explanations](https://stackoverflow.com/questions/9452701/ukkonens-suffix-tree-algorithm-in-plain-english))
-* That's the Suffix Tree part.
+Based on [Ukkonen's algorithm](https://www.cs.helsinki.fi/u/ukkonen/SuffixT1withFigs.pdf) ([or here for explanations](https://stackoverflow.com/questions/9452701/ukkonens-suffix-tree-algorithm-in-plain-english)), that's the Suffix Tree part. But GOST is:
 * Generalized: one tree is used for multiple strings.
 * Online: any of the strings can be extended and the tree will be updated.
 
@@ -11,11 +10,6 @@ Based on [Ukkonen's algorithm](https://www.cs.helsinki.fi/u/ukkonen/SuffixT1with
 This is my attempt at an Online Generalized Suffix Tree algorithm.
 I started this project because I needed an online implementation of an online suffix tree algorithm in python for work, and couldn't find any. I lost my job (time to look for a new one), but I had some fun generalizing it.
 It is not optimized: the purpose of this implementation is to have a human readable version of the algorithm, and to hunt down for bugs.
-
-## Features
-
-Generalized.
-Fully online.
 
 ## Tests
 
