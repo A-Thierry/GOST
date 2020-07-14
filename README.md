@@ -25,4 +25,4 @@ Please read [CONTRIBUTING.md](https://github.com/A-Thierry/GOST/blob/master/CONT
 
 ## License
 
-This project is licensed under the Apache 2.0 License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the Apache 2.0 License - see the [LICENSE.md](https://github.com/A-Thierry/GOST/blob/master/LICENSE.md) file for details
