@@ -8,7 +8,7 @@ Based on [Ukkonen's algorithm](https://www.cs.helsinki.fi/u/ukkonen/SuffixT1with
 ## Motivation
 
 This is my attempt at an Online Generalized Suffix Tree algorithm.
-I started this project because I needed an online implementation of an online suffix tree algorithm in python for work, and couldn't find any. I lost my job (time to look for a new one), but I had some fun generalizing it.
+I started this project because I needed an online implementation of an online suffix tree algorithm in python.
 It is not optimized: the purpose of this implementation is to have a human readable version of the algorithm, and to hunt down for bugs.
 
 ## Tests
