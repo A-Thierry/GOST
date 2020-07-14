@@ -8,7 +8,7 @@ Based on [Ukkonen's algorithm](https://www.cs.helsinki.fi/u/ukkonen/SuffixT1with
 ## Motivation
 
 This is my attempt at an Online Generalized Suffix Tree algorithm.
-It is not optimized: the purpose of this implementation is to have a human readable version of the algorithm, and to hunt down for bugs.
+The purpose of this implementation is to have a human readable version of the algorithm, and to hunt down for bugs.
 
 ## Tests
 
