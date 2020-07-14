@@ -17,7 +17,7 @@ Try adding new strings or extending the ones at the end of [Functions.py](https:
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](https://github.com/A-Thierry/GOST/blob/master/CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
+Please read [CONTRIBUTING.md](https://github.com/A-Thierry/GOST/blob/master/CONTRIBUTING.md) for details on the code of conduct, and the process for submitting pull requests to me.
 
 ## Authors
 
