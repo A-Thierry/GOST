@@ -13,7 +13,7 @@ It is not optimized: the purpose of this implementation is to have a human reada
 
 ## Tests
 
-Try adding new strings or extending the ones at the end of [Functions.py](https://github.com/A-Thierry/GOST/blob/master/Functions.py).
+Try adding new strings or extending the ones at the end of [Functions.py](https://github.com/A-Thierry/GOST/blob/master/files/Functions.py).
 
 ## Contributing
 
