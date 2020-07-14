@@ -1,7 +1,7 @@
 # GOST
 A Generalized Online Suffix Tree algorithm
 
-Based on [Ukkonen's algorithm](https://www.cs.helsinki.fi/u/ukkonen/SuffixT1withFigs.pdf) ([or here for explanations](https://stackoverflow.com/questions/9452701/ukkonens-suffix-tree-algorithm-in-plain-english)), that's the Suffix Tree part. But GOST is:
+Based on [Ukkonen's algorithm](https://www.cs.helsinki.fi/u/ukkonen/SuffixT1withFigs.pdf) ([or here for more explanations](https://stackoverflow.com/questions/9452701/ukkonens-suffix-tree-algorithm-in-plain-english)). That's the Suffix Tree part. But GOST is:
 * Generalized: one tree is used for multiple strings.
 * Online: any of the strings can be extended and the tree will be updated.
 
