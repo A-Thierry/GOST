@@ -6,11 +6,11 @@ class OnlineGeneralizedSuffixTree(object):
 
      Attributes
      ----------
-     sequences : {key=sequence_index:str,value=[s,e,q,u,e,n,c,e]}
+     sequences : dict{key=sequence_index:str,value=[s,e,q,u,e,n,c,e]}
          a dictionary of the sequences the suffix tree references:
      active_sequence : str
          reference to the sequence_index in 'sequences' we are inserting suffixes to
-     active_points : {key=sequence_index, value=ActivePoint]
+     active_points : dict{key=sequence_index, value=ActivePoint]
          dictionary of the different active points in the tree, indexed on their sequence_index
      created_nodes_during_step : [Nodes]
          list of the nodes created during one step of the algorithm
@@ -42,12 +42,12 @@ class OnlineGeneralizedSuffixTree(object):
         """
         Parameters
         ----------
-        sequences : list[str]
-            a list of the sequences the tree is indexing
+        sequences : dict{key=sequence_index:str,value=[s,e,q,u,e,n,c,e]}
+            a dictionary of the sequences the suffix tree references
         active_sequence : str
             the index of the sequence we are actively inserting a suffix to in the list of sequences 'sequences'
-        active_points: [ActivePoint]
-            list of the active points of the tree corresponding to the different sequences (same index as 'sequences')
+        active_points: dict{key=sequence_index, value=ActivePoint]
+            dictionary of the different active points in the tree, indexed on their sequence_index
         created_nodes_during_step: [Node]
         """
 
@@ -78,8 +78,8 @@ class OnlineGeneralizedSuffixTree(object):
         depth: int
             length of the suffix represented by a node (sum of the length of the edges on the path
             from the root to that node)
-        starting_positions: {sequence_index: [int]}
-            list of the starting positions of the suffix in the different sequences (indexed as sequences)
+        starting_positions: dict{sequence_index: [int]}
+            dictionary of the starting positions of the suffix in the different sequences (indexed as sequences)
         """
 
         def __init__(self, edges=None, incoming_edge=None, suffix_link_to=None, depth: int = -1, starting_positions=None):
@@ -95,8 +95,8 @@ class OnlineGeneralizedSuffixTree(object):
             depth: int
                 length of the suffix represented by a node (sum of the length of the edges on the path
                 from the root to that node)
-            starting_positions: {sequence_index: [int]}
-                list of the starting positions of the suffix in the different sequences (indexed as sequences)
+            starting_positions: dict{sequence_index: [int]}
+                dictionary of the starting positions of the suffix in the different sequences (indexed as sequences)
             """
 
             if edges is None:
