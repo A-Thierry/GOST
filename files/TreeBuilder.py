@@ -1,15 +1,3 @@
-# This is my attempt at an Online Generalized Suffix Tree algorithm.
-# Based on Ukkonen's algorithm (https://www.cs.helsinki.fi/u/ukkonen/SuffixT1withFigs.pdf)
-# See also: https://stackoverflow.com/questions/9452701/ukkonens-suffix-tree-algorithm-in-plain-english
-# That's the Suffix Tree part.
-# Generalized: one tree is used for multiple strings.
-# Online: any of the strings referenced can be extended and the tree will be updated.
-# I started this project because I needed an online implementation of an online suffix tree algorithm in python for
-# work, and couldn't find any. I lost my job (time to look for a new one), but I had some fun generalizing it.
-# It is not optimized: the purpose of this implementation is to have a human readable version of the algorithm,
-# and to hunt for bugs.
-
-
 class OnlineGeneralizedSuffixTree(object):
     """
      A class used to build generalized suffix tree online
