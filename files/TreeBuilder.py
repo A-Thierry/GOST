@@ -1,3 +1,15 @@
+# This is my attempt at an Online Generalized Suffix Tree algorithm.
+# Based on Ukkonen's algorithm (https://www.cs.helsinki.fi/u/ukkonen/SuffixT1withFigs.pdf)
+# See also: https://stackoverflow.com/questions/9452701/ukkonens-suffix-tree-algorithm-in-plain-english
+# That's the Suffix Tree part.
+# Generalized: one tree is used for multiple strings.
+# Online: any of the strings referenced can be extended and the tree will be updated.
+# I started this project because I needed an online implementation of an online suffix tree algorithm in python for
+# work, and couldn't find any. I lost my job (time to look for a new one), but I had some fun generalizing it.
+# It is not optimized: the purpose of this implementation is to have a human readable version of the algorithm,
+# and to hunt for bugs.
+
+
 class OnlineGeneralizedSuffixTree(object):
     """
      A class used to build generalized suffix tree online
@@ -6,11 +18,11 @@ class OnlineGeneralizedSuffixTree(object):
 
      Attributes
      ----------
-     sequences : dict{key=sequence_index:str,value=[s,e,q,u,e,n,c,e]}
+     sequences : {key=sequence_index:str,value=[s,e,q,u,e,n,c,e]}
          a dictionary of the sequences the suffix tree references:
      active_sequence : str
          reference to the sequence_index in 'sequences' we are inserting suffixes to
-     active_points : dict{key=sequence_index, value=ActivePoint]
+     active_points : {key=sequence_index, value=ActivePoint]
          dictionary of the different active points in the tree, indexed on their sequence_index
      created_nodes_during_step : [Nodes]
          list of the nodes created during one step of the algorithm
@@ -33,8 +45,8 @@ class OnlineGeneralizedSuffixTree(object):
          with the first character of the suffix we want to insert
      update_active_edge():
          select the next active_edge in case active_length is longer than the length of the current active_edge
-     solve_unresolved_leaves():
-         move the unresolved leafs along their respective edges/nodes and split the edge if an edge doesn't
+     solve_floating_leaves():
+         move the floating leafs along their respective edges/nodes and split the edge if an edge doesn't
          match the inserted character
      """
 
@@ -42,12 +54,12 @@ class OnlineGeneralizedSuffixTree(object):
         """
         Parameters
         ----------
-        sequences : dict{key=sequence_index:str,value=[s,e,q,u,e,n,c,e]}
-            a dictionary of the sequences the suffix tree references
+        sequences : list[str]
+            a list of the sequences the tree is indexing
         active_sequence : str
             the index of the sequence we are actively inserting a suffix to in the list of sequences 'sequences'
-        active_points: dict{key=sequence_index, value=ActivePoint]
-            dictionary of the different active points in the tree, indexed on their sequence_index
+        active_points: [ActivePoint]
+            list of the active points of the tree corresponding to the different sequences (same index as 'sequences')
         created_nodes_during_step: [Node]
         """
 
@@ -78,8 +90,8 @@ class OnlineGeneralizedSuffixTree(object):
         depth: int
             length of the suffix represented by a node (sum of the length of the edges on the path
             from the root to that node)
-        starting_positions: dict{sequence_index: [int]}
-            dictionary of the starting positions of the suffix in the different sequences (indexed as sequences)
+        starting_positions: {sequence_index: [int]}
+            list of the starting positions of the suffix in the different sequences (indexed as sequences)
         """
 
         def __init__(self, edges=None, incoming_edge=None, suffix_link_to=None, depth: int = -1, starting_positions=None):
@@ -95,8 +107,8 @@ class OnlineGeneralizedSuffixTree(object):
             depth: int
                 length of the suffix represented by a node (sum of the length of the edges on the path
                 from the root to that node)
-            starting_positions: dict{sequence_index: [int]}
-                dictionary of the starting positions of the suffix in the different sequences (indexed as sequences)
+            starting_positions: {sequence_index: [int]}
+                list of the starting positions of the suffix in the different sequences (indexed as sequences)
             """
 
             if edges is None:
@@ -126,11 +138,11 @@ class OnlineGeneralizedSuffixTree(object):
             represents (-1 for the end of the array)
         canonical_sequence: str
             index of the sequence in 'sequences' the edge is referring to
-        unresolved_leaves: [UnresolvedLeaf]
-            list of unresolved leaves standing on edge
+        floating_leaves: [UnresolvedLeaf]
+            list of floating leaves standing on edge
         """
 
-        def __init__(self, node_from=None, node_to=None, canonical_range=None, canonical_sequence='sequence0', unresolved_leaves=None):
+        def __init__(self, node_from=None, node_to=None, canonical_range=None, canonical_sequence='sequence0', floating_leaves=None):
 
             """
             Parameters
@@ -144,8 +156,8 @@ class OnlineGeneralizedSuffixTree(object):
                 represents (-1 for the end of the array)
             canonical_sequence: str
                 index of the sequence in 'sequences' the edge is referring to
-            unresolved_leaves: [UnresolvedLeaf]
-                list of unresolved leaves standing on edge
+            floating_leaves: [UnresolvedLeaf]
+                list of floating leaves standing on edge
             """
 
             self.node_from = node_from
@@ -154,9 +166,9 @@ class OnlineGeneralizedSuffixTree(object):
                 canonical_range = [None, -1]
             self.canonical_range = canonical_range
             self.canonical_sequence = canonical_sequence
-            if unresolved_leaves is None:
-                unresolved_leaves = []
-            self.unresolved_leaves = unresolved_leaves
+            if floating_leaves is None:
+                floating_leaves = []
+            self.floating_leaves = floating_leaves
 
     def length(self, edge):
         """ Return the length of the edge 'edge' """
@@ -182,11 +194,11 @@ class OnlineGeneralizedSuffixTree(object):
             index in the sequence we are currently trying to match
         remainder: int
             number of suffixes to insert in the tree for that sequence
-        unresolved_leaves: [UnresolvedLeaf]
-            list of the unresolved leaves for the sequence the active point is referencing to
+        floating_leaves: [UnresolvedLeaf]
+            list of the floating leaves for the sequence the active point is referencing to
         """
 
-        def __init__(self, active_node=None, active_edge=None, active_length: int = 0, current_point: int = 0, remainder: int = 0, created_nodes_during_step=None, unresolved_leaves=None):
+        def __init__(self, active_node=None, active_edge=None, active_length: int = 0, current_point: int = 0, remainder: int = 0, created_nodes_during_step=None, floating_leaves=None):
             """
             Parameters
             ----------
@@ -210,22 +222,22 @@ class OnlineGeneralizedSuffixTree(object):
             if created_nodes_during_step is None:
                 created_nodes_during_step = []
             self.created_nodes_during_step = created_nodes_during_step
-            if unresolved_leaves is None:
-                unresolved_leaves = []
-            self.unresolved_leaves = unresolved_leaves
+            if floating_leaves is None:
+                floating_leaves = []
+            self.floating_leaves = floating_leaves
 
     class UnresolvedLeaf(object):
         """
-        A class used to represent the unresolved leaves in the online generalized suffix tree
+        A class used to represent the floating leaves in the online generalized suffix tree
         ...
         Attributes
         ----------
         node: Node
-            the node the unresolved leaf is on
+            the node the floating leaf is on
         edge: Edge
-            the edge the unresolved leaf is on
+            the edge the floating leaf is on
         length: int
-            the length on edge the unresolved leaf stands at
+            the length on edge the floating leaf stands at
         sequence: str
             the index of the sequence the UnresolvedLeaf refers to
         """
@@ -234,11 +246,11 @@ class OnlineGeneralizedSuffixTree(object):
             """
             Parameters
             node: Node
-                the node the unresolved leaf is on
+                the node the floating leaf is on
             edge: Edge
-                the edge the unresolved leaf is on
+                the edge the floating leaf is on
             length: int
-                the length on edge the unresolved leaf stands at
+                the length on edge the floating leaf stands at
             sequence: str
                 the index of the sequence the UnresolvedLeaf refers to
             """
@@ -251,11 +263,11 @@ class OnlineGeneralizedSuffixTree(object):
 
     def insert_suffix(self):
         """Insert the last character of the string 'self.sequences[self.active_sequence]' in the tree"""
-        # Update the active point and the unresolved leaves
+        # Update the active point and the floating leaves
         if self.active_points[self.active_sequence].active_edge:
             self.update_active_edge()
-        if self.active_points[self.active_sequence].unresolved_leaves:
-            self.solve_unresolved_leaves()
+        if self.active_points[self.active_sequence].floating_leaves:
+            self.solve_floating_leaves()
         # If there is no active edge, select the one from 'self.active_point[self.active_sequence].active_node'
         # that starts with the character we want to insert. Create one if no one does.
         if self.active_points[self.active_sequence].active_edge is None:
@@ -309,19 +321,19 @@ class OnlineGeneralizedSuffixTree(object):
         middle_node.edges.append(new_edge)
         old_edge.node_to.incoming_edge = new_edge
         old_edge.canonical_range[1] = old_edge.canonical_range[0] + length
-        # Check if no other active points or unresolved leaves are on 'old_edge', if so, deal with them
+        # Check if no other active points or floating leaves are on 'old_edge', if so, deal with them
         # depending on where they are relative to the split: before, do nothing; at the split, put them
         # on the new node, 'middle_node'; and put them on the new edge 'new_edge' if they come after.
-        for unresolved_leaf in old_edge.unresolved_leaves:
-            if unresolved_leaf.length > length:
-                unresolved_leaf.length -= length
-                unresolved_leaf.edge = new_edge
-                if unresolved_leaf.sequence not in middle_node.starting_positions:
-                    middle_node.starting_positions[unresolved_leaf.sequence] = []
-                middle_node.starting_positions[unresolved_leaf.sequence].append(len(self.sequences[unresolved_leaf.sequence]) - middle_node.depth - unresolved_leaf.length)
-                new_edge.unresolved_leaves.append(unresolved_leaf)
-                old_edge.unresolved_leaves.remove(unresolved_leaf)
-        unresolved_active_points_indices = []
+        for floating_leaf in old_edge.floating_leaves:
+            if floating_leaf.length > length:
+                floating_leaf.length -= length
+                floating_leaf.edge = new_edge
+                if floating_leaf.sequence not in middle_node.starting_positions:
+                    middle_node.starting_positions[floating_leaf.sequence] = []
+                middle_node.starting_positions[floating_leaf.sequence].append(len(self.sequences[floating_leaf.sequence]) - middle_node.depth - floating_leaf.length)
+                new_edge.floating_leaves.append(floating_leaf)
+                old_edge.floating_leaves.remove(floating_leaf)
+        floating_active_points_indices = []
         for active_sequence in self.sequences:
             if active_sequence == edge.canonical_sequence:
                 break
@@ -332,11 +344,11 @@ class OnlineGeneralizedSuffixTree(object):
                     self.active_points[active_sequence].active_length = 0
                 if self.active_points[active_sequence].active_length > self.length(edge):
                     self.active_points[active_sequence].active_length -= self.length(edge)
-                    unresolved_active_points_indices.append(active_sequence)
+                    floating_active_points_indices.append(active_sequence)
         old_edge.node_to = middle_node
         middle_node.incoming_edge = old_edge
-        while unresolved_active_points_indices:
-            self.active_points[unresolved_active_points_indices.pop(0)].active_edge = new_edge
+        while floating_active_points_indices:
+            self.active_points[floating_active_points_indices.pop(0)].active_edge = new_edge
 
     def add_edge(self, node_from, canonical_range_from=None, canonical_range_to=None, starting_position=0):
         """ Add a new edge to a new node from node 'node_from'.
@@ -402,9 +414,9 @@ class OnlineGeneralizedSuffixTree(object):
             # If the node at the end of active_edge is a leaf (end of a sequence), change the sequence that edge is
             # referencing and store a special pointer to that leaf: an UnresolvedLeaf
             if self.active_points[self.active_sequence].active_edge.canonical_range[1] == -1:
-                unresolved_leaf = self.UnresolvedLeaf(edge=self.active_points[self.active_sequence].active_edge, node=None, length=self.length(edge=self.active_points[self.active_sequence].active_edge), current_point=len(self.sequences[self.active_points[self.active_sequence].active_edge.canonical_sequence]), sequence=self.active_points[self.active_sequence].active_edge.canonical_sequence)
-                self.active_points[self.active_points[self.active_sequence].active_edge.canonical_sequence].unresolved_leaves.append(unresolved_leaf)
-                self.active_points[self.active_sequence].active_edge.unresolved_leaves.append(unresolved_leaf)
+                floating_leaf = self.UnresolvedLeaf(edge=self.active_points[self.active_sequence].active_edge, node=None, length=self.length(edge=self.active_points[self.active_sequence].active_edge), current_point=len(self.sequences[self.active_points[self.active_sequence].active_edge.canonical_sequence]), sequence=self.active_points[self.active_sequence].active_edge.canonical_sequence)
+                self.active_points[self.active_points[self.active_sequence].active_edge.canonical_sequence].floating_leaves.append(floating_leaf)
+                self.active_points[self.active_sequence].active_edge.floating_leaves.append(floating_leaf)
                 self.active_points[self.active_sequence].active_edge.node_to.starting_positions[self.active_points[self.active_sequence].active_edge.canonical_sequence] = []
                 self.active_points[self.active_sequence].active_edge.canonical_sequence = self.active_sequence
                 self.active_points[self.active_sequence].active_edge.canonical_range[0] = self.active_points[self.active_sequence].current_point
@@ -451,25 +463,25 @@ class OnlineGeneralizedSuffixTree(object):
             self.active_points[self.active_sequence].active_edge = None
             return
 
-    def solve_unresolved_leaves(self):
-        """ Move the unresolved leafs along their respective edges/nodes and
+    def solve_floating_leaves(self):
+        """ Move the floating leafs along their respective edges/nodes and
          split the edge if an edge doesn't match the inserted character."""
         leaves_to_remove = []
         add_suffix_link_from = []
-        # For each unresolved_leaf of the active_sequence:
-        if self.active_points[self.active_sequence].unresolved_leaves:
-            self.active_points[self.active_sequence].unresolved_leaves.sort(key=lambda x: x.edge.node_from.depth + x.length, reverse=True)
-            # todo self.active_points[self.active_sequence].unresolved_leaves should already be sorted.
+        # For each floating_leaf of the active_sequence:
+        if self.active_points[self.active_sequence].floating_leaves:
+            self.active_points[self.active_sequence].floating_leaves.sort(key=lambda x: x.edge.node_from.depth + x.length, reverse=True)
+            # todo self.active_points[self.active_sequence].floating_leaves should already be sorted.
             # todo Should be thoroughly checked and then get rid of the sorting step
-            for leaf in self.active_points[self.active_sequence].unresolved_leaves:
-                # if the unresolved_leaf is in the middle of an edge:
+            for leaf in self.active_points[self.active_sequence].floating_leaves:
+                # if the floating_leaf is in the middle of an edge:
                 if self.length(edge=leaf.edge) > leaf.length:
-                    # Move the unresolved_leaf along the edge if the next character along the
+                    # Move the floating_leaf along the edge if the next character along the
                     # edge matches the one we are inserting
                     if self.sequences[leaf.edge.canonical_sequence][leaf.edge.canonical_range[0] + leaf.length] == self.sequences[self.active_sequence][-1]:
                         leaf.length += 1
-                    # Split the edge at the point the unresolved_leaf if the character along the edge
-                    # doesn't match the one we are inserting, unresolved_leaf is resolved
+                    # Split the edge at the point the floating_leaf if the character along the edge
+                    # doesn't match the one we are inserting, floating_leaf is resolved
                     else:
                         leaves_to_remove.append(leaf)
                         self.split_edge(old_edge=leaf.edge, active_point=leaf)
@@ -480,21 +492,21 @@ class OnlineGeneralizedSuffixTree(object):
                             else:
                                 add_suffix_link_from = []
                         add_suffix_link_from.append(leaf.edge.node_to)
-                # if the unresolved_leaf is at the end of an edge:
+                # if the floating_leaf is at the end of an edge:
                 elif self.length(edge=leaf.edge) == leaf.length:
                     # if the node at the end of the edge is a leaf: swap for which leaf is
-                    # unresolved and which is resolved
+                    # floating and which is resolved
                     if leaf.edge.canonical_range[1] == -1:
-                        unresolved_leaf = self.UnresolvedLeaf(edge=leaf.edge, node=None, length=self.length(edge=leaf.edge), current_point=len(self.sequences[leaf.edge.canonical_sequence]), sequence=leaf.edge.canonical_sequence)
-                        self.active_points[leaf.edge.canonical_sequence].unresolved_leaves.append(unresolved_leaf)
+                        floating_leaf = self.UnresolvedLeaf(edge=leaf.edge, node=None, length=self.length(edge=leaf.edge), current_point=len(self.sequences[leaf.edge.canonical_sequence]), sequence=leaf.edge.canonical_sequence)
+                        self.active_points[leaf.edge.canonical_sequence].floating_leaves.append(floating_leaf)
                         leaves_to_remove.append(leaf)
-                        leaf.edge.unresolved_leaves.append(unresolved_leaf)
+                        leaf.edge.floating_leaves.append(floating_leaf)
                         leaf.edge.node_to.starting_positions[leaf.edge.canonical_sequence] = []
                         leaf.edge.canonical_sequence = self.active_sequence
                         leaf.edge.node_to.starting_positions[self.active_sequence].append(len(self.sequences[self.active_sequence]) - (leaf.edge.node_from.depth + self.length(leaf.edge)))
                         leaf.edge.canonical_range[0] = len(self.sequences[self.active_sequence]) - self.length(leaf.edge)
                         leaf.edge.canonical_range[1] = -1
-                    # otherwise, select the next edge unresolved_leaf will be on if such an edge
+                    # otherwise, select the next edge floating_leaf will be on if such an edge
                     # matches with the character we want to insert
                     else:
                         if leaf.sequence not in leaf.edge.node_to.starting_positions:
@@ -507,12 +519,12 @@ class OnlineGeneralizedSuffixTree(object):
                                 leaf.edge = edge
                                 leaf.length = 1
                                 break
-                        # or create an edge if no such edge exists (unresolved_leaf is resolved)
+                        # or create an edge if no such edge exists (floating_leaf is resolved)
                         if leaf.edge == r:
                             self.add_edge(node_from=leaf.edge.node_to, canonical_range_from=len(self.sequences[self.active_sequence]) - 1, starting_position=len(self.sequences[self.active_sequence]) - leaf.edge.node_to.depth - 1)
                         del leaf
         while leaves_to_remove:
             leaf = leaves_to_remove.pop(0)
-            self.active_points[self.active_sequence].unresolved_leaves.remove(leaf)
-            leaf.edge.unresolved_leaves.remove(leaf)
+            self.active_points[self.active_sequence].floating_leaves.remove(leaf)
+            leaf.edge.floating_leaves.remove(leaf)
             del leaf
