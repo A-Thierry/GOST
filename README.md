@@ -16,7 +16,7 @@ Try adding new strings or extending the ones at the end of [Tests.py](https://gi
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](https://github.com/A-Thierry/GOST/blob/master/CONTRIBUTING.md) for details on the code of conduct, and the process for submitting pull requests to me.
+Please read [CONTRIBUTING.md](https://github.com/A-Thierry/GOST/blob/master/CONTRIBUTING.md) for details on the code of conduct, and the process for submitting pull requests.
 
 ## Authors
 
