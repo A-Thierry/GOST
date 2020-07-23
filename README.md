@@ -12,7 +12,7 @@ The purpose of this implementation is to have a human readable version of the al
 
 ## Tests
 
-Try adding new strings or extending the ones at the end of [Functions.py](https://github.com/A-Thierry/GOST/blob/master/files/Tests.py).
+Try adding new strings or extending the ones at the end of [Tests.py](https://github.com/A-Thierry/GOST/blob/master/files/Tests.py).
 
 ## Contributing
 
