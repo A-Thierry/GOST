@@ -7,7 +7,7 @@ class OnlineGeneralizedSuffixTree(object):
      Attributes
      ----------
      sequences : {key=sequence_index:str,value=[s,e,q,u,e,n,c,e]}
-         a dictionary of the sequences the suffix tree references:
+         a dictionary of the sequences the suffix tree references
      active_sequence : str
          reference to the sequence_index in 'sequences' we are inserting suffixes to
      active_points : {key=sequence_index, value=ActivePoint]
@@ -42,13 +42,15 @@ class OnlineGeneralizedSuffixTree(object):
         """
         Parameters
         ----------
-        sequences : list[str]
-            a list of the sequences the tree is indexing
+        sequences : {key=sequence_index:str,value=[s,e,q,u,e,n,c,e]}
+            a dictionary of the sequences the suffix tree references: the key is the 'sequence_index' and the 
+            value a list of the elements (letters, tokens...) of the sequence
         active_sequence : str
             the index of the sequence we are actively inserting a suffix to in the list of sequences 'sequences'
-        active_points: [ActivePoint]
-            list of the active points of the tree corresponding to the different sequences (same index as 'sequences')
+        active_points : {key=sequence_index, value=ActivePoint]
+            dictionary of the different active points in the tree, indexed on their sequence_index
         created_nodes_during_step: [Node]
+            list of the nodes created during one step of the algorithm
         """
 
         if sequences is None:
