@@ -59,7 +59,7 @@ class SuffixTree(OnlineGeneralizedSuffixTree):
                 # Normal Mode:
                 print(f"{repr_edge}_{self.sequences[node.incoming_edge.canonical_sequence][node.incoming_edge.canonical_range[0]:len(self.sequences[node.incoming_edge.canonical_sequence])]} at positions: {node.starting_positions}")  # Normal Mode
                 # Debug Mode:
-                # print(f"{repr_edge}_{self.sequences[node.incoming_edge.canonical_sequence][node.incoming_edge.canonical_range[0]:len(self.sequences[node.incoming_edge.canonical_sequence])]} at positions: {node.starting_positions} edge {node.incoming_edge} node {node}, depth: {node.depth} {'<--- Incoming edge is active edge Incoming edge is active edge Incoming edge is active edge Incoming edge is active edge Incoming edge is active edge Incoming edge is active edge Incoming edge is active edge Incoming edge is active edge Incoming edge is active edge Incoming edge is active edge Incoming edge is active edge Incoming edge is active edge Incoming edge is active edge Incoming edge is active edge Incoming edge is active edge Incoming edge is active edge' if node.incoming_edge==self.active_points[self.active_sequence].active_edge else ''}")  # Debug Mode
+                #  print(f"{repr_edge}_{self.sequences[node.incoming_edge.canonical_sequence][node.incoming_edge.canonical_range[0]:len(self.sequences[node.incoming_edge.canonical_sequence])]} at positions: {node.starting_positions} edge {node.incoming_edge} node {node}, depth: {node.depth} {'<--- Incoming edge is active edge Incoming edge is active edge Incoming edge is active edge Incoming edge is active edge Incoming edge is active edge Incoming edge is active edge Incoming edge is active edge Incoming edge is active edge Incoming edge is active edge Incoming edge is active edge Incoming edge is active edge Incoming edge is active edge Incoming edge is active edge Incoming edge is active edge Incoming edge is active edge Incoming edge is active edge' if node.incoming_edge==self.active_points[self.active_sequence].active_edge else ''}")  # Debug Mode
             else:
                 # Normal Mode:
                 print(f"{repr_edge}_{self.sequences[node.incoming_edge.canonical_sequence][node.incoming_edge.canonical_range[0]:node.incoming_edge.canonical_range[1]]} at positions: {node.starting_positions}")  # Normal Mode
@@ -137,22 +137,3 @@ class SuffixTree(OnlineGeneralizedSuffixTree):
                     if edge.node_to.depth >= length:
                         print(f'    The pattern \"{"".join(self.sequences[edge.canonical_sequence][edge.canonical_range[1] - edge.node_to.depth: edge.canonical_range[1]])}\" appears {node_occurrences} times at positions: {edge.node_to.starting_positions}.')
                     self.find_patterns_longer_than_length_appear_more_than_n_times(length, n_times, edge.node_to)
-
-
-if __name__ == '__main__':
-    # Instantiating GOST
-    t = SuffixTree()
-    # Adding a sequence to GOST (without specification, the sequence_index will be 'sequence0')
-    t.add_sequence('abananaandanananasandtwobananasandanananas')
-    t.add_sequence('miss', 'state')
-    # Appending to the sequence 'state'
-    t.add_sequence('ississippi', 'state')
-    # Print the tree
-    t.draw_tree()
-    # Interact with the tree (up to the active_points: the results presented here will be missing everything
-    # that has yet to be inserted because of an active_point being on an edge. If you want to include those,
-    # there are two options: adding a final character to every sequence, or recursively build the suffix trees of
-    # the non covered parts)
-    t.find_patterns_appear_more_than_n_times(10)
-    t.find_patterns_longer_than_length_appear_more_than_n_times(5, 3)
-    t.is_pattern_present('ananas')

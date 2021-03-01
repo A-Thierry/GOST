@@ -1,41 +1,27 @@
 from Functions import SuffixTree
 
+
 if __name__ == '__main__':
+
+    # Instantiating GOST
     t = SuffixTree()
-    t.add_sequence('abananaandanananasandtwobananasandanananas')
-    t.add_sequence('a', 'parallel1')
-    t.add_sequence('ab', 'parallel2')
-    t.add_sequence('ba', 'parallel1')
-    t.add_sequence('ab', 'parallel2')
-    t.add_sequence('bb', 'parallel1')
-    t.add_sequence('ab', 'parallel2')
-    t.add_sequence('ab', 'parallel1')
-    t2 = SuffixTree()
-    t2.add_sequence('a', 'parallel1bis')
-    t2.add_sequence('ab', 'parallel2bis')
-    t2.add_sequence('ba', 'parallel1bis')
-    t2.add_sequence('ba', 'parallel2bis')
-    t2.add_sequence('ba', 'parallel1bis')
-    t2.add_sequence('ba', 'parallel2bis')
-    t.add_sequence('abaabaab', 'ds1')
-    t.add_sequence('aabaabaab', 'ds1')
-    t.add_sequence('aabaaba', 'ds2')
-    t.add_sequence('a', 'ds1')
-    t.add_sequence('aab', 'ds1')
-    t.add_sequence('aabaa', 'ds1')
-    t.add_sequence('baabaaa', 'ds1')
-    t.add_sequence('baaba', 'ds1')
-    t.add_sequence('abaaab', 'ds2')
-    t.add_sequence('aabaab', 'ds2')
-    t.add_sequence('aaba', 'ds2')
-    t.add_sequence('ab', 'ds1')
-    t.add_sequence('c', 'ds1')
-    t.add_sequence('abananaandananana', 'monkey1')
-    t.add_sequence('s', 'monkey1')
-    t.add_sequence('andtwobananas', 'ape1')
-    t.add_sequence('andtwoananases', 'ape1')
-    t.add_sequence('v', 'monkey1')
-    t.add_sequence('mis', 'state')
-    t.add_sequence('siss', 'state')
-    t.add_sequence('ippi', 'state')
+    
+    # Adding a sequence to GOST (without specification, the sequence_index will be 'sequence0', here the sequence is a string)
+    t.add_sequence('abananaandanananas')
+    # Adding another sequence to GOST (sequence_index is 'state', here the sequence is a list)
+    t.add_sequence(['m', 'i', 's', 's'], 'state')
+    # Appending to the sequence 'state'
+    t.add_sequence(['i', 's', 's', 'i', 's', 's', 'i', 'p', 'p', 'i'], 'state')
+    # Appending to the first sequence ('sequence0')
+    t.add_sequence('and')
+    t.add_sequence('twobananasandanananas')
+    
+    # Interacting with GOST
+    print('\n'*3)
     t.draw_tree()
+    t.find_patterns_appear_more_than_n_times(10)
+    t.find_patterns_longer_than_length_appear_more_than_n_times(5, 3)
+    t.is_pattern_present('ananas')
+    # The results presented here will be missing everything that has yet to be inserted because of an active_point being
+    # on an edge. If you want to include those, there are two options: adding a final character to every sequence, or
+    # recursively build the suffix trees of the non covered parts)

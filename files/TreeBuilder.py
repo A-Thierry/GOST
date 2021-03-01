@@ -512,7 +512,7 @@ class OnlineGeneralizedSuffixTree(object):
                         # or create an edge if no such edge exists (floating_leaf is resolved).
                         if leaf.edge == r:
                             self.add_edge(node_from=leaf.edge.node_to, canonical_range_from=len(self.sequences[self.active_sequence]) - 1, starting_position=len(self.sequences[self.active_sequence]) - leaf.edge.node_to.depth - 1)
-                        del leaf
+                        leaves_to_remove.append(leaf)
         while leaves_to_remove:
             leaf = leaves_to_remove.pop(0)
             self.active_points[self.active_sequence].floating_leaves.remove(leaf)
