@@ -7,7 +7,7 @@ Based on [Ukkonen's algorithm](https://www.cs.helsinki.fi/u/ukkonen/SuffixT1with
 
 ## Output
 
-
+![good old Mississippi](https://github.com/A-Thierry/GOST/blob/master/files/output.png)
 
 ## Algorithm
 
