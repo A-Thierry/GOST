@@ -11,7 +11,7 @@ if __name__ == '__main__':
     # Adding another sequence to GOST (sequence_index is 'state', here the sequence is a list)
     t.add_sequence(['m', 'i', 's', 's'], 'river')
     # Appending to the sequence 'state'
-    t.add_sequence(['i', 's', 's', 'i', 's', 's', 'i', 'p', 'p', 'i'], 'river')
+    t.add_sequence(['i', 's', 's', 'i', 'p', 'p', 'i'], 'river')
     # Appending to the first sequence ('sequence0')
     t.add_sequence('and')
     t.add_sequence('twobananasandanananas')
