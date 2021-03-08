@@ -8,6 +8,7 @@ Based on [Ukkonen's algorithm](https://www.cs.helsinki.fi/u/ukkonen/SuffixT1with
 ## Output
 
 ![good old Mississippi](https://github.com/A-Thierry/GOST/blob/master/files/output.png)
+One might notice that there is an occurence of 'i' missing at position 10: the active point is there, and that will be updated on the next step of the algorithm.
 
 ## Algorithm
 
