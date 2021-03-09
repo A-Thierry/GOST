@@ -8,9 +8,9 @@ if __name__ == '__main__':
     
     # Adding a sequence to GOST (without specification, the sequence_index will be 'sequence0', here the sequence is a string)
     t.add_sequence('abananaandanananas')
-    # Adding another sequence to GOST (sequence_index is 'state', here the sequence is a list)
+    # Adding another sequence to GOST (sequence_index is 'river', here the sequence is a list)
     t.add_sequence(['m', 'i', 's', 's'], 'river')
-    # Appending to the sequence 'state'
+    # Appending to the sequence 'river'
     t.add_sequence(['i', 's', 's', 'i', 'p', 'p', 'i'], 'river')
     # Appending to the first sequence ('sequence0')
     t.add_sequence('and')
