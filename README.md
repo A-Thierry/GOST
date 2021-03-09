@@ -8,7 +8,7 @@ Based on [Ukkonen's algorithm](https://www.cs.helsinki.fi/u/ukkonen/SuffixT1with
 ## Output
 
 tree = SuffixTree()\
-tree.add_sequence('mississippi')\
+tree.add_sequence('Mississippi')\
 tree.draw_tree()
 
 ![good old Mississippi](https://github.com/A-Thierry/GOST/blob/master/files/output.png)
